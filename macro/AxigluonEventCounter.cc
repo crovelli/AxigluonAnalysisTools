@@ -8,7 +8,7 @@
 #include <sstream>
 #include <iomanip>
 
-#define NSAMPLES 8 
+#define NSAMPLES 13 
 
 using namespace std;
 
@@ -52,6 +52,14 @@ void countEvents() {
 
   chains[7]->Add("results/Summer11_V1/TTJets_TuneZ2_7TeV-madgraph-tauola/*Counters.root");
 
+  chains[8]->Add("results/Summer11_V1/WW_TuneZ2_7TeV_pythia6_tauola/*Counters.root");
+  chains[9]->Add("results/Summer11_V1/WZ_TuneZ2_7TeV_pythia6_tauola/*Counters.root");
+
+  chains[10]->Add("results/Summer11_V1/GJets_TuneZ2_40_HT_100_7TeV-madgraph/*Counters.root");
+  chains[11]->Add("results/Summer11_V1/GJets_TuneZ2_100_HT_200_7TeV-madgraph/*Counters.root");
+
+  chains[12]->Add("results/Summer11_V1/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola_Summer11-PU_S4_START42_V11-v1/*Counters.root");
+  
   cout << "chains added. " << endl;
 
   std::vector<TString>  signalSampleName;
@@ -73,6 +81,13 @@ void countEvents() {
 
   sampleName.push_back("results/merged/TTbar_Ele.root");                // 7
 
+  sampleName.push_back("results/merged/WW_Ele.root");                   // 8
+  sampleName.push_back("results/merged/WZ_Ele.root");                   // 9
+
+  sampleName.push_back("results/merged/GJ_40-100_Ele.root");           // 10
+  sampleName.push_back("results/merged/GJ_100-200_Ele.root");          // 11
+
+  sampleName.push_back("results/merged/DY_Ele.root");               // 12
 
   std::map<int,float> axigluon_xsec;  
   axigluon_xsec.insert(std::make_pair(150,77.3440));
@@ -89,16 +104,23 @@ void countEvents() {
   std::vector<float> sampleXsec;
   // wjets
   sampleXsec.push_back(31314.); // madgraph // 0
-  // powheg samples. Xsecs taken from PREP: http://cms.cern.ch/iCMS/prep/requestmanagement?pwg=TOP&campid=Summer11
-  sampleXsec.push_back(2.341); // 1
-  sampleXsec.push_back(1.265); // 2
-  sampleXsec.push_back(3.572); // 3
-  sampleXsec.push_back(1.843); // 4
-  // prep says 7.46 pb. 7.87 is from Guillelmo
-  sampleXsec.push_back(7.87); // 5
-  sampleXsec.push_back(7.87); // 6
+  // single-top, powheg samples. Xsecs taken from PREP: http://cms.cern.ch/iCMS/prep/requestmanagement?pwg=TOP&campid=Summer11
+  sampleXsec.push_back(2.341);  // 1
+  sampleXsec.push_back(1.265);  // 2
+  sampleXsec.push_back(35.72);  // 3
+  sampleXsec.push_back(18.43);  // 4
+  sampleXsec.push_back(7.46);   // 5
+  sampleXsec.push_back(7.46);   // 6
   // ttbar
-  sampleXsec.push_back(157.5); // 7
+  sampleXsec.push_back(163.);   // 7  - by A.Giammanco, private mail
+  // dibosons
+  sampleXsec.push_back(47.);    // 8 - s(NLO qqWW+ggWW) = 47 pb, gg/Tot = 0.0305 [K. Ellis]                             
+  sampleXsec.push_back(18.2);   // 9 - from ?? (same as HWW)
+  // gamma+jets
+  sampleXsec.push_back(25690.);  // 10 - from prep
+  sampleXsec.push_back(5213.);   // 11 - from prep
+  // DY, m>50                        
+  sampleXsec.push_back(3048.);   // 12 - from PGiulio
 
   std::vector<double> signalProcId;
   for(int imass=0; imass<4;imass++) {
@@ -114,6 +136,11 @@ void countEvents() {
   sampleProcessId.push_back(19); // tW
   sampleProcessId.push_back(20); // tbarW
   sampleProcessId.push_back(10); // ttbar
+  sampleProcessId.push_back(10000); // WW
+  sampleProcessId.push_back(10001); // WZ
+  sampleProcessId.push_back(20000); // GJets 40-100
+  sampleProcessId.push_back(20001); // GJets 100-200 
+  sampleProcessId.push_back(30000); // DY, m>50
 
   float nEvH[4];
   for(int imass=0; imass<4; imass++) nEvH[imass] = 0.0;

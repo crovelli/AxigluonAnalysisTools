@@ -41,6 +41,19 @@ print  "done with top.\n";
 print  "submitting V+jets...\n";
 system("python cmst3_submit_manyfilesperjob.py Summer11_V1 WJetsToLNu_TuneZ2_7TeV-madgraph-tauola 15  AxigluonApp 8nh $prefix 1");
 
+sleep 800;
+
+print "submitting dibosons...\n";
+system("python cmst3_submit_manyfilesperjob.py Summer11_V1 WW_TuneZ2_7TeV_pythia6_tauola 15  AxigluonApp 8nh $prefix 1");
+system("python cmst3_submit_manyfilesperjob.py Summer11_V1 WZ_TuneZ2_7TeV_pythia6_tauola 15  AxigluonApp 8nh $prefix 1");
+
+print "submitting gamma+jets...\n";
+system("python cmst3_submit_manyfilesperjob.py Summer11_V1 GJets_TuneZ2_100_HT_200_7TeV-madgraph 15  AxigluonApp 8nh $prefix 1");
+system("python cmst3_submit_manyfilesperjob.py Summer11_V1 GJets_TuneZ2_40_HT_100_7TeV-madgraph 15  AxigluonApp 8nh $prefix 1");
+
+print "submitting DY...\n";
+system("python cmst3_submit_manyfilesperjob.py Summer11_V1 DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola_Summer11-PU_S4_START42_V11-v1 15  AxigluonApp 8nh $prefix 1"); 
+
 print "\nDONE WITH MASS $mass GeV\n";
 print "<--------------------------\n";
     
