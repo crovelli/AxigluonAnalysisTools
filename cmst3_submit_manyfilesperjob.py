@@ -66,7 +66,7 @@ while (len(inputfiles) > 0):
     outputfile.write('export STAGE_HOST=castorcms\n')
     outputfile.write('export STAGE_SVCCLASS=cmst3\n')
     outputfile.write('cp -r '+pwd+"/"+prefix+'/config $WORKDIR\n')
-    outputfile.write('cp -r '+pwd+"/"+prefix+'/data $WORKDIR\n')
+    outputfile.write('cp -r '+pwd+'/data $WORKDIR\n')
     outputfile.write('export SCRAM_ARCH=slc5_amd64_gcc434\n')
     outputfile.write('cd /afs/cern.ch/user/c/crovelli/scratch0/Vecbos2010/CMSSW_4_2_6/\n')
     outputfile.write('eval `scramv1 runtime -sh`\n')
