@@ -95,6 +95,9 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
     Float_t         pxLept;
     Float_t         pyLept;
     Float_t         pzLept;
+    Float_t         leadingJetLike;
+    Float_t         secondJetLike;
+    Float_t         productJetLike;
 
     treeOrig->SetBranchAddress("run", &run);
     treeOrig->SetBranchAddress("ls", &ls);
@@ -143,6 +146,9 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
     treeOrig->SetBranchAddress("pxLept", &pxLept);
     treeOrig->SetBranchAddress("pyLept", &pyLept);
     treeOrig->SetBranchAddress("pzLept", &pzLept);
+    treeOrig->SetBranchAddress("leadingJetLike", &leadingJetLike);
+    treeOrig->SetBranchAddress("secondJetLike",  &secondJetLike);
+    treeOrig->SetBranchAddress("productJetLike", &productJetLike);
 
     // additional
     Float_t effW   = 1.0;   
@@ -204,6 +210,10 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
       theTreeNew->Branch("pxLept", &pxLept, "pxLept/F");
       theTreeNew->Branch("pyLept", &pyLept, "pyLept/F");
       theTreeNew->Branch("pzLept", &pzLept, "pzLept/F");
+      theTreeNew->Branch("leadingJetLike", &leadingJetLike, "leadingJetLike/F");
+      theTreeNew->Branch("secondJetLike",  &secondJetLike,  "secondJetLike/F");
+      theTreeNew->Branch("productJetLike", &productJetLike, "productJetLike/F");
+
       theTreeNew->Branch("baseW", &baseW,  "baseW/F");
     }
 
