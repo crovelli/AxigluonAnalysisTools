@@ -183,7 +183,7 @@ void AxigluonSelection::Loop() {
       lastLumi = lumiBlock;
       std::cout << "[GoodRunLS]::Run " << lastRun << " LS " << lastLumi << " is OK" << std::endl;
     }
-    
+
     
     // IMPORTANT: FOR DATA RELOAD THE TRIGGER MASK PER FILE WHICH IS SUPPOSED TO CONTAIN UNIFORM CONDITIONS X FILE
     reloadTriggerMask(runNumber);
@@ -235,7 +235,6 @@ void AxigluonSelection::Loop() {
       std::cout << "channel: ee = " << m_channel[ee] << "\tmm = " << m_channel[mm] << std::endl;
     }
 
-
     // -------------------------------------------------------------
     // W->enu candidates: preparing vectors of candidates and selecting the highest pT ele after each step
 
@@ -259,7 +258,6 @@ void AxigluonSelection::Loop() {
     int theIsolElectron(theBestIsolEle);
     int theConvElectron(theBestConvEle);
     int theIpElectron(theBestIpEle);
-    
 
     // -------------------------------------------------------------
     // W->munu candidates: preparing vectors of candidates and selecting the highest pT mu after each step
@@ -281,7 +279,6 @@ void AxigluonSelection::Loop() {
     int theIsolMuonMinus(theBestIsolMuon);
     int theIpMuonMinus(theBestIpMuon);
 
-
     // -------------------------------------------------------------
     // set of kinematics: : now I've the final lepton 
     resetKinematics();
@@ -289,7 +286,7 @@ void AxigluonSelection::Loop() {
     // MET is an event variable. Independent on the channel
     m_p3PFMet -> SetXYZ(pxPFMet[0],pyPFMet[0],pzPFMet[0]);  
     modPFMet = m_p3PFMet->Pt();   
-    
+
     // setting all the channel dependent variables
     setKinematicsEle(theElectron);
     setKinematicsMu(theMuon);
@@ -308,41 +305,56 @@ void AxigluonSelection::Loop() {
     // variables useful for the selection
     for(int ichan=0; ichan<2; ichan++) {
 
-      int lead    = theLeadingJet[ichan];
-      int sublead = theSecondJet[ichan];
-
-      // jet counter 
+      // jet counter and selection of leading/subleading jet 
+      int lead    = -1;
+      int sublead = -1;
       njets[ichan] = numJets(eleCands[ichan],muCands[ichan],ichan);
-
-      // soft muon counter 
-      nsoftmu[ichan] = numSoftMuons(muCands[ichan]);
+      lead    = theLeadingJet[ichan];
+      sublead = theSecondJet[ichan];
       
-      // extra lepton counter
-      nextraleptons[ichan] = numExtraLeptons(eleCands[ichan],muCands[ichan]);
+      if (lead>=0 && sublead>=0) { 
+	
+	// soft muon counter 
+	nsoftmu[ichan] = numSoftMuons(muCands[ichan]);
+	
+	// extra lepton counter
+	nextraleptons[ichan] = numExtraLeptons(eleCands[ichan],muCands[ichan]);
+	
+	// di-jet invariant mass
+	dijetInvMass[ichan] = getDiJetInvMass(lead, sublead);
 
-      // di-jet invariant mass
-      dijetInvMass[ichan] = getDiJetInvMass(lead, sublead);
+	// di-jet pT
+	dijetPt[ichan] = getDiJetPt(lead, sublead);
 
-      // di-jet pT
-      dijetPt[ichan] = getDiJetPt(lead, sublead);
-      
-      // deltaEta between the two jets
-      dijetDeta[ichan] = getDiJetDeta(lead, sublead);
+	// deltaEta between the two jets
+	dijetDeta[ichan] = getDiJetDeta(lead, sublead);
 
-      // quark-gluon likelihood 
-      float rhoPF = rhoFastjet; 
-      float leadPt    = GetPt(pxAK5PFPUcorrJet[lead],pyAK5PFPUcorrJet[lead]);
-      float subleadPt = GetPt(pxAK5PFPUcorrJet[sublead],pyAK5PFPUcorrJet[sublead]);
-      int leadNcharged    = chargedHadronMultiplicityAK5PFPUcorrJet[lead];
-      int subleadNcharged = chargedHadronMultiplicityAK5PFPUcorrJet[sublead];
-      int leadNneutral    = neutralHadronMultiplicityAK5PFPUcorrJet[lead] + photonMultiplicityAK5PFPUcorrJet[lead];
-      int subleadNneutral = neutralHadronMultiplicityAK5PFPUcorrJet[sublead] + photonMultiplicityAK5PFPUcorrJet[sublead];
-      float leadPtD    = ptDAK5PFPUcorrJet[lead];
-      float subleadPtD = ptDAK5PFPUcorrJet[sublead];
-      QGLikeLead[ichan]    = qglikeli->computeQGLikelihoodPU( leadPt,    rhoPF, leadNcharged,    leadNneutral,    leadPtD );
-      QGLikeSublead[ichan] = qglikeli->computeQGLikelihoodPU( subleadPt, rhoPF, subleadNcharged, subleadNneutral, subleadPtD );
-      QGLikeProd[ichan]    = QGLikeLead[ichan]*QGLikeSublead[ichan];
-    }
+	// quark-gluon likelihood 
+	float rhoPF = rhoFastjet; 
+	float leadPt    = GetPt(pxAK5PFPUcorrJet[lead],pyAK5PFPUcorrJet[lead]);
+	float subleadPt = GetPt(pxAK5PFPUcorrJet[sublead],pyAK5PFPUcorrJet[sublead]);
+	int leadNcharged    = chargedHadronMultiplicityAK5PFPUcorrJet[lead];
+	int subleadNcharged = chargedHadronMultiplicityAK5PFPUcorrJet[sublead];
+	int leadNneutral    = neutralHadronMultiplicityAK5PFPUcorrJet[lead] + photonMultiplicityAK5PFPUcorrJet[lead];
+	int subleadNneutral = neutralHadronMultiplicityAK5PFPUcorrJet[sublead] + photonMultiplicityAK5PFPUcorrJet[sublead];
+	float leadPtD    = ptDAK5PFPUcorrJet[lead];
+	float subleadPtD = ptDAK5PFPUcorrJet[sublead];
+	QGLikeLead[ichan]    = qglikeli->computeQGLikelihoodPU( leadPt,    rhoPF, leadNcharged,    leadNneutral,    leadPtD );
+	QGLikeSublead[ichan] = qglikeli->computeQGLikelihoodPU( subleadPt, rhoPF, subleadNcharged, subleadNneutral, subleadPtD );
+	QGLikeProd[ichan]    = QGLikeLead[ichan]*QGLikeSublead[ichan];
+      } else {
+
+	// dummy values
+	nsoftmu[ichan]       = -999;
+	nextraleptons[ichan] = -999;
+	dijetInvMass[ichan]  = -999.;
+	dijetPt[ichan]       = -999.;
+	dijetDeta[ichan]     = -999.;
+	QGLikeLead[ichan]    = -999.;
+	QGLikeSublead[ichan] = -999.;
+	QGLikeProd[ichan]    = -999.;
+      }
+    }      
 
     // ---------------------------------------
     // filling counters for the different final states
@@ -756,7 +768,7 @@ void AxigluonSelection::setKinematicsEle(int myEle) {
     eleCands[ee].push_back(myEle);
     m_p3Lepton[ee] -> SetXYZ(pxEle[myEle], pyEle[myEle], pzEle[myEle]);
     m_p4Lepton[ee] -> SetXYZT(pxEle[myEle], pyEle[myEle], pzEle[myEle], energyEle[myEle]);
-    m_p3ChPFMet[ee] = oneLepPFChargedMet(m_p4Lepton[ee]->Vect());  
+    m_p3ChPFMet[ee] = oneLepPFChargedMet(m_p4Lepton[ee]->Vect());
     modChPFMet[ee]  = (m_p3ChPFMet[ee]).Pt();     
     WmT_ChPFMet[ee] = sqrt(2 * m_p4Lepton[ee]->Pt() * modChPFMet[ee] * (1-cos(m_p3Lepton[ee]->Angle(m_p3ChPFMet[ee]))));
     WmT_PFMet[ee]   = sqrt(2 * m_p4Lepton[ee]->Pt() * modPFMet * (1-cos(m_p3Lepton[ee]->Angle(*m_p3PFMet))) );
@@ -764,7 +776,7 @@ void AxigluonSelection::setKinematicsEle(int myEle) {
 }
 
 void AxigluonSelection::setKinematicsMu(int myMuon) {
-  
+
   if (myMuon > -1) {
     leptonPt[mm] = GetPt(pxMuon[myMuon],pyMuon[myMuon]);
     muCands[mm].push_back(myMuon);
@@ -857,7 +869,7 @@ int AxigluonSelection::numJets( std::vector<int> eleToRemove, std::vector<int> m
     if(foundMatch) continue;
 
     if(_selectionEle->getSwitch("etaJetAcc") && !_selectionEle->passCut("etaJetAcc", fabs(etaAK5PFPUcorrJet[j]))) continue;
-
+    
     if ( pt>ETMax2 && pt>ETMax ) {
       int theSecond = theLeadingJet[theChannel];
       int theLead   = j;
@@ -1007,6 +1019,7 @@ float AxigluonSelection::getDiJetDeta(int theLJ, int theSJ) {
 
   TVector3 p3LJet(pxAK5PFPUcorrJet[theLJ],pyAK5PFPUcorrJet[theLJ],pzAK5PFPUcorrJet[theLJ]);
   TVector3 p3SJet(pxAK5PFPUcorrJet[theSJ],pyAK5PFPUcorrJet[theSJ],pzAK5PFPUcorrJet[theSJ]);
+  
   float eta1 = p3LJet.Eta();
   float eta2 = p3SJet.Eta();
   float deltaEta = eta1-eta2;
@@ -1140,18 +1153,20 @@ bool AxigluonSelection::isAxigluonMuonID(int muonIndex) {
   return isGood;
 }
 
-TVector3 AxigluonSelection::oneLepPFChargedMet(TVector3 lept) {   
-
+TVector3 AxigluonSelection::oneLepPFChargedMet(TVector3 lept) {
+  
   float chMetP3x = pxPFChMet[0];
   float chMetP3y = pyPFChMet[0];
-
+  
   // charged PF MET has been computed with all the PF cands (inverted -p)                                                          
   // first remove the contribution in dR = 0.1 to avoid double counting                                                            
   for(int i=0; i<nReducedPFCand; i++) {
     TVector3 pfCandP3(pxReducedPFCand[i],pyReducedPFCand[i],pzReducedPFCand[i]);
-    if(pfCandP3.DeltaR(lept)<=0.1) {
-      chMetP3x += pxReducedPFCand[i];
-      chMetP3y += pyReducedPFCand[i];
+    if (fabs( pxReducedPFCand[i]>0 && pyReducedPFCand[i]>0 && pzReducedPFCand[i]>0 )) {
+      if(pfCandP3.DeltaR(lept)<=0.1) {
+	chMetP3x += pxReducedPFCand[i];
+	chMetP3y += pyReducedPFCand[i];
+      }
     }
   }
 
