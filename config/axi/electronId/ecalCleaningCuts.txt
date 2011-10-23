@@ -1,0 +1,2 @@
+spikeFraction          -9999    0.95
+seedTime               -10.0    10.0

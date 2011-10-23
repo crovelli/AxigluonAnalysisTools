@@ -1,0 +1,39 @@
+isData			0
+goodRunLS               0
+ecalDrivenOnly		1
+MCtruth			0
+trigger			0
+leptonId		1
+leptonIso		1
+leptonD0		1
+convRej			1
+muGlobalIso		1
+leadJetBtag		0
+subleadJetBtag		0
+etaElectronAcc		1   
+electronBigCrack	1   
+ptElectronAcc		1   
+etaMuonAcc		1   
+ptMuonAcc		1   
+etaJetAcc		1
+etJetAcc		1
+jetConeWidth		1
+electronDz              1
+electronIP		1
+muonIP			1
+muonDz			0
+softMuPt		1
+nExtraLeptons		1
+met			1
+wmt			0
+nJets			1
+dijetInvMass		0
+dijetPt			0
+dijetDeta		1
+nSoftMuons              0
+ptLepton		0
+electronIDType		WP80a
+
+
+
+
