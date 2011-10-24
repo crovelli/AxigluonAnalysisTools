@@ -8,7 +8,7 @@
 #include <sstream>
 #include <iomanip>
 
-#define NSAMPLES 13 
+#define NSAMPLES 14 
 
 using namespace std;
 
@@ -54,11 +54,12 @@ void countEvents() {
 
   chains[8]->Add("results/Summer11_V1/WW_TuneZ2_7TeV_pythia6_tauola/*Counters.root");
   chains[9]->Add("results/Summer11_V1/WZ_TuneZ2_7TeV_pythia6_tauola/*Counters.root");
+  chains[10]->Add("results/Summer11_V1/ZZ_TuneZ2_7TeV_pythia6_tauola/*Counters.root");
 
-  chains[10]->Add("results/Summer11_V1/GJets_TuneZ2_40_HT_100_7TeV-madgraph/*Counters.root");
-  chains[11]->Add("results/Summer11_V1/GJets_TuneZ2_100_HT_200_7TeV-madgraph/*Counters.root");
+  chains[11]->Add("results/Summer11_V1/GJets_TuneZ2_40_HT_100_7TeV-madgraph/*Counters.root");
+  chains[12]->Add("results/Summer11_V1/GJets_TuneZ2_100_HT_200_7TeV-madgraph/*Counters.root");
 
-  chains[12]->Add("results/Summer11_V1/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola_Summer11-PU_S4_START42_V11-v1/*Counters.root");
+  chains[13]->Add("results/Summer11_V1/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola_Summer11-PU_S4_START42_V11-v1/*Counters.root");
   
   cout << "chains added. " << endl;
 
@@ -83,11 +84,12 @@ void countEvents() {
 
   sampleName.push_back("results/merged/WW_Ele.root");                   // 8
   sampleName.push_back("results/merged/WZ_Ele.root");                   // 9
+  sampleName.push_back("results/merged/ZZ_Ele.root");                   // 10
 
-  sampleName.push_back("results/merged/GJ_40-100_Ele.root");           // 10
-  sampleName.push_back("results/merged/GJ_100-200_Ele.root");          // 11
+  sampleName.push_back("results/merged/GJ_40-100_Ele.root");           // 11
+  sampleName.push_back("results/merged/GJ_100-200_Ele.root");          // 12
 
-  sampleName.push_back("results/merged/DY_Ele.root");               // 12
+  sampleName.push_back("results/merged/DY_Ele.root");               // 13
 
   std::map<int,float> axigluon_xsec;  
   axigluon_xsec.insert(std::make_pair(150,77.3440));
@@ -116,11 +118,12 @@ void countEvents() {
   // dibosons
   sampleXsec.push_back(47.);    // 8 - s(NLO qqWW+ggWW) = 47 pb, gg/Tot = 0.0305 [K. Ellis]                             
   sampleXsec.push_back(18.2);   // 9 - from ?? (same as HWW)
+  sampleXsec.push_back(7.41);   // 10 - from "sigma_ZZ = 6.77 (1+0.12/1.277)=7.41pb, where 1.277 is the LO->NLO k-factor"
   // gamma+jets
-  sampleXsec.push_back(25690.);  // 10 - from prep
-  sampleXsec.push_back(5213.);   // 11 - from prep
+  sampleXsec.push_back(25690.);  // 11 - from prep
+  sampleXsec.push_back(5213.);   // 12 - from prep
   // DY, m>50                        
-  sampleXsec.push_back(3048.);   // 12 - from PGiulio
+  sampleXsec.push_back(3048.);   // 13 - from PGiulio
 
   std::vector<double> signalProcId;
   for(int imass=0; imass<4;imass++) {
@@ -138,6 +141,7 @@ void countEvents() {
   sampleProcessId.push_back(10); // ttbar
   sampleProcessId.push_back(10000); // WW
   sampleProcessId.push_back(10001); // WZ
+  sampleProcessId.push_back(10002); // ZZ
   sampleProcessId.push_back(20000); // GJets 40-100
   sampleProcessId.push_back(20001); // GJets 100-200 
   sampleProcessId.push_back(30000); // DY, m>50
