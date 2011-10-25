@@ -57,7 +57,8 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
     Int_t           njets;
     Int_t           numExtraLep;
     Float_t         puweight;
-    Float_t         leptPt;
+    Float_t         leptPt1;
+    Float_t         leptPt2;
     Float_t         leadingJetBTag;
     Float_t         secondJetBTag;
     Float_t         dijetInvMass;
@@ -67,6 +68,7 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
     Float_t         chPFMet;
     Float_t         PFWMt;
     Float_t         chPFWMt;
+    /*
     Float_t         pt;
     Float_t         eta;
     Float_t         phi;
@@ -80,6 +82,7 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
     Float_t         combinedIso;
     Int_t           charge;
     Float_t         lh;
+    */
     Float_t         pxPFMet;
     Float_t         pyPFMet;
     Float_t         pzPFMet;
@@ -92,9 +95,12 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
     Float_t         pxSecondJet;
     Float_t         pySecondJet;
     Float_t         pzSecondJet;
-    Float_t         pxLept;
-    Float_t         pyLept;
-    Float_t         pzLept;
+    Float_t         pxLept1;
+    Float_t         pyLept1;
+    Float_t         pzLept1;
+    Float_t         pxLept2;
+    Float_t         pyLept2;
+    Float_t         pzLept2;
     Float_t         leadingJetLike;
     Float_t         secondJetLike;
     Float_t         productJetLike;
@@ -105,7 +111,8 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
     treeOrig->SetBranchAddress("puweight", &puweight);
     treeOrig->SetBranchAddress("hlt", &hlt);
     treeOrig->SetBranchAddress("nVtx", &nVtx);
-    treeOrig->SetBranchAddress("leptPt", &leptPt);
+    treeOrig->SetBranchAddress("leptPt1", &leptPt1);
+    treeOrig->SetBranchAddress("leptPt2", &leptPt2);
     treeOrig->SetBranchAddress("njets", &njets);
     treeOrig->SetBranchAddress("leadingJetBTag", &leadingJetBTag);
     treeOrig->SetBranchAddress("secondJetBTag", &secondJetBTag);
@@ -118,6 +125,7 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
     treeOrig->SetBranchAddress("PFWMt", &PFWMt);
     treeOrig->SetBranchAddress("chPFWMt", &chPFWMt);
     treeOrig->SetBranchAddress("step", step);
+    /*
     treeOrig->SetBranchAddress("pt", &pt);
     treeOrig->SetBranchAddress("eta", &eta);
     treeOrig->SetBranchAddress("phi", &phi);
@@ -131,6 +139,7 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
     treeOrig->SetBranchAddress("combinedIso", &combinedIso);
     treeOrig->SetBranchAddress("charge", &charge);    
     treeOrig->SetBranchAddress("lh", &lh);
+    */
     treeOrig->SetBranchAddress("pxPFMet", &pxPFMet);
     treeOrig->SetBranchAddress("pyPFMet", &pyPFMet);
     treeOrig->SetBranchAddress("pzPFMet", &pzPFMet);
@@ -143,9 +152,12 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
     treeOrig->SetBranchAddress("pxSecondJet", &pxSecondJet);
     treeOrig->SetBranchAddress("pySecondJet", &pySecondJet);
     treeOrig->SetBranchAddress("pzSecondJet", &pzSecondJet);
-    treeOrig->SetBranchAddress("pxLept", &pxLept);
-    treeOrig->SetBranchAddress("pyLept", &pyLept);
-    treeOrig->SetBranchAddress("pzLept", &pzLept);
+    treeOrig->SetBranchAddress("pxLept1", &pxLept1);
+    treeOrig->SetBranchAddress("pyLept1", &pyLept1);
+    treeOrig->SetBranchAddress("pzLept1", &pzLept1);
+    treeOrig->SetBranchAddress("pxLept2", &pxLept2);
+    treeOrig->SetBranchAddress("pyLept2", &pyLept2);
+    treeOrig->SetBranchAddress("pzLept2", &pzLept2);
     treeOrig->SetBranchAddress("leadingJetLike", &leadingJetLike);
     treeOrig->SetBranchAddress("secondJetLike",  &secondJetLike);
     treeOrig->SetBranchAddress("productJetLike", &productJetLike);
@@ -174,9 +186,10 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
       theTreeNew->Branch("chwmt", &chPFWMt, "chwmt/F");  
       theTreeNew->Branch("trigger", &hlt, "trigger/O");
       theTreeNew->Branch("nvtx", &nVtx, "nvtx/I");
-      theTreeNew->Branch("leptPt", &leptPt, "leptPt/F");
-      theTreeNew->Branch("leptEta", &eta, "leptEta/F");
-      theTreeNew->Branch("leptPhi", &phi, "leptphi/F");
+      theTreeNew->Branch("leptPt1", &leptPt1, "leptPt1/F");
+      theTreeNew->Branch("leptPt2", &leptPt2, "leptPt2/F");
+      // theTreeNew->Branch("leptEta", &eta, "leptEta/F");
+      // theTreeNew->Branch("leptPhi", &phi, "leptphi/F");
       theTreeNew->Branch("njets", &njets, "njets/I");
       theTreeNew->Branch("leadingJetBTag", &leadingJetBTag, "leadingJetBTag/F");
       theTreeNew->Branch("secondJetBTag", &secondJetBTag, "secondJetBTag/F");
@@ -185,6 +198,7 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
       theTreeNew->Branch("dijetPt", &dijetPt, "dijetPt/F");
       theTreeNew->Branch("dijetDeta", &dijetDeta, "dijetDeta/F");
       theTreeNew->Branch("step", step, "step[25]/O");
+      /*
       theTreeNew->Branch("deta_eleid", &deta, "deta_eleid/F");
       theTreeNew->Branch("dphi_eleid", &dphi, "dphi_eleid/F");
       theTreeNew->Branch("hoe_eleid", &hoe, "hoe_eleid/F");
@@ -195,6 +209,7 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
       theTreeNew->Branch("ecalIso", &ecalIso, "ecalIso/F");
       theTreeNew->Branch("hcalIso", &hcalIso, "hcalIso/F");
       theTreeNew->Branch("combinedIso", &combinedIso, "combinedIso/F");
+      */
       theTreeNew->Branch("pxPFMet", &pxPFMet, "pxPFMet/F");
       theTreeNew->Branch("pyPFMet", &pyPFMet, "pyPFMet/F");
       theTreeNew->Branch("pzPFMet", &pzPFMet, "pzPFMet/F");
@@ -207,9 +222,12 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
       theTreeNew->Branch("pxSecondJet", &pxSecondJet, "pxSecondJet[3]/F");
       theTreeNew->Branch("pySecondJet", &pySecondJet, "pySecondJet[3]/F");
       theTreeNew->Branch("pzSecondJet", &pzSecondJet, "pzSecondJet[3]/F");
-      theTreeNew->Branch("pxLept", &pxLept, "pxLept/F");
-      theTreeNew->Branch("pyLept", &pyLept, "pyLept/F");
-      theTreeNew->Branch("pzLept", &pzLept, "pzLept/F");
+      theTreeNew->Branch("pxLept1", &pxLept1, "pxLept1/F");
+      theTreeNew->Branch("pyLept1", &pyLept1, "pyLept1/F");
+      theTreeNew->Branch("pzLept1", &pzLept1, "pzLept1/F");
+      theTreeNew->Branch("pxLept2", &pxLept2, "pxLept2/F");
+      theTreeNew->Branch("pyLept2", &pyLept2, "pyLept2/F");
+      theTreeNew->Branch("pzLept2", &pzLept2, "pzLept2/F");
       theTreeNew->Branch("leadingJetLike", &leadingJetLike, "leadingJetLike/F");
       theTreeNew->Branch("secondJetLike",  &secondJetLike,  "secondJetLike/F");
       theTreeNew->Branch("productJetLike", &productJetLike, "productJetLike/F");
@@ -225,10 +243,12 @@ void addWeights(const char* filename, float baseW, int processId, int finalstate
       
       if (processId>0) { // MC => apply scale factors
 	if (finalstate==0) {   // mu
-	  effW = getOfflineEff(leptPt, eta, histoSFmuons42);    
+	  // effW = getOfflineEff(leptPt, eta, histoSFmuons42);    
+	  effW = 1.;
 	}
 	else if (finalstate==1) { // ele
-	  effW = getOfflineEff(leptPt, eta, histoSFele42);
+	  // effW = getOfflineEff(leptPt, eta, histoSFele42);
+	  effW = 1.;
 	}
       } else { // data
 	effW = 1.;
