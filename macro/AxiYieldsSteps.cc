@@ -19,6 +19,7 @@ float SingleTop_fullSel[19];
 float ttbar_fullSel[19];
 float WW_fullSel[19];
 float WZ_fullSel[19];
+float ZZ_fullSel[19];
 float gjets_fullSel[19];
 float DY_fullSel[19];
 float data_fullSel[19];
@@ -29,6 +30,7 @@ float SingleTop_fullSel_err[19];
 float ttbar_fullSel_err[19];
 float WW_fullSel_err[19];
 float WZ_fullSel_err[19];
+float ZZ_fullSel_err[19];
 float gjets_fullSel_err[19];
 float DY_fullSel_err[19];
 float data_fullSel_err[19];
@@ -39,6 +41,7 @@ float SingleTop_eff_fullSel[19];
 float ttbar_eff_fullSel[19];
 float WW_eff_fullSel[19];
 float WZ_eff_fullSel[19];
+float ZZ_eff_fullSel[19];
 float gjets_eff_fullSel[19];
 float DY_eff_fullSel[19];
 
@@ -48,6 +51,7 @@ float SingleTop_finaleff_fullSel;
 float ttbar_finaleff_fullSel;
 float WW_finaleff_fullSel;
 float WZ_finaleff_fullSel;
+float ZZ_finaleff_fullSel;
 float gjets_finaleff_fullSel;
 float DY_finaleff_fullSel;
 
@@ -57,6 +61,7 @@ float SingleTop_finaleff;
 float ttbar_finaleff;
 float WW_finaleff;
 float WZ_finaleff;
+float ZZ_finaleff;
 float gjets_finaleff;
 float DY_finaleff;
 
@@ -66,6 +71,7 @@ float SingleTop_final[4][3];
 float ttbar_final[4][3];
 float WW_final[4][3];
 float WZ_final[4][3];
+float ZZ_final[4][3];
 float gjets_final[4][3];
 float DY_final[4][3];
 float bkg_final[4][3];
@@ -76,6 +82,7 @@ float SingleTop_final_err[4][3];
 float ttbar_final_err[4][3];
 float WW_final_err[4][3];
 float WZ_final_err[4][3];
+float ZZ_final_err[4][3];
 float gjets_final_err[4][3];
 float DY_final_err[4][3];
 float bkg_final_err[4][3];
@@ -95,17 +102,18 @@ float SingleTopTW_xsec  = 7.46;
 float SingleTbarTW_xsec = 7.46;
 float WW_xsec = 47.;
 float WZ_xsec = 18.2;
+float ZZ_xsec = 7.41;   
 float GJets_40_100_xsec = 25690.;
 float GJets_100_200_xsec = 5213.;
 float DY_xsec = 3048.;
 
-string sampleNames[15];
+string sampleNames[16];
 
 void computeYields(float lumi=1, const char* finalstate="EE", int mass=0) {
 
-  TChain *chains_fullSel[15];
+  TChain *chains_fullSel[16];
 
-  for(int isample=0; isample<15; isample++) {
+  for(int isample=0; isample<16; isample++) {
     char fullsel_treename[200];
     sprintf(fullsel_treename,"FULL_SELECTION_EVENT_COUNTER_%s",finalstate);
     chains_fullSel[isample] = new TChain(fullsel_treename);
@@ -130,11 +138,12 @@ void computeYields(float lumi=1, const char* finalstate="EE", int mass=0) {
   sampleNames[8]  = "SingleTbar_tWChannel";
   sampleNames[9]  = "WW";
   sampleNames[10] = "WZ";
-  sampleNames[11] = "GJets_40_100";
-  sampleNames[12] = "GJets_100_200";
-  sampleNames[13] = "DY";
+  sampleNames[11] = "ZZ";
+  sampleNames[12] = "GJets_40_100";
+  sampleNames[13] = "GJets_100_200";
+  sampleNames[14] = "DY";
   // signal
-  sampleNames[14] = "AG+W->jj";
+  sampleNames[15] = "AG+W->jj";
 
   float Axi_xsec;
   
@@ -167,12 +176,12 @@ void computeYields(float lumi=1, const char* finalstate="EE", int mass=0) {
     chains_fullSel[8]->Add(TString(dir_mc)+TString("/Tbar_TuneZ2_tW-channel-DR_7TeV-powheg-tauola/*Counters.root"));      // chiara" default?
     chains_fullSel[9]->Add(TString(dir_mc)+TString("/WW_TuneZ2_7TeV_pythia6_tauola/*Counters.root"));       
     chains_fullSel[10]->Add(TString(dir_mc)+TString("/WZ_TuneZ2_7TeV_pythia6_tauola/*Counters.root"));       
-    chains_fullSel[11]->Add(TString(dir_mc)+TString("/GJets_TuneZ2_40_HT_100_7TeV-madgraph/*Counters.root"));       
-    chains_fullSel[12]->Add(TString(dir_mc)+TString("/GJets_TuneZ2_100_HT_200_7TeV-madgraph/*Counters.root"));       
-    chains_fullSel[13]->Add(TString(dir_mc)+TString("/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola_Summer11-PU_S4_START42_V11-v1/*Counters.root"));       
-
+    chains_fullSel[11]->Add(TString(dir_mc)+TString("/ZZ_TuneZ2_7TeV_pythia6_tauola/*Counters.root"));       
+    chains_fullSel[12]->Add(TString(dir_mc)+TString("/GJets_TuneZ2_40_HT_100_7TeV-madgraph/*Counters.root"));       
+    chains_fullSel[13]->Add(TString(dir_mc)+TString("/GJets_TuneZ2_100_HT_200_7TeV-madgraph/*Counters.root"));       
+    chains_fullSel[14]->Add(TString(dir_mc)+TString("/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola_Summer11-PU_S4_START42_V11-v1/*Counters.root"));       
     // signal
-    chains_fullSel[14]->Add(TString(dir_mc)+TString(AxiSample));       
+    chains_fullSel[15]->Add(TString(dir_mc)+TString(AxiSample));       
     
     // data
     // if (strcmp(finalstate,"EE")==0) chains_fullSel[0]->Add(TString(dir_data)+TString("/DoubleElectron/*Counters.root"));
@@ -198,12 +207,12 @@ void computeYields(float lumi=1, const char* finalstate="EE", int mass=0) {
     chains_fullSel[8]->Add(TString(dir_mc)+TString("/Tbar_TuneZ2_tW-channel-DR_7TeV-powheg-tauola/*Counters.root"));      // chiara" default?
     chains_fullSel[9]->Add(TString(dir_mc)+TString("/WW_TuneZ2_7TeV_pythia6_tauola/*Counters.root"));       
     chains_fullSel[10]->Add(TString(dir_mc)+TString("/WZ_TuneZ2_7TeV_pythia6_tauola/*Counters.root"));       
-    chains_fullSel[11]->Add(TString(dir_mc)+TString("/GJets_TuneZ2_40_HT_100_7TeV-madgraph/*Counters.root"));       
-    chains_fullSel[12]->Add(TString(dir_mc)+TString("/GJets_TuneZ2_100_HT_200_7TeV-madgraph/*Counters.root"));       
-    chains_fullSel[13]->Add(TString(dir_mc)+TString("/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola_Summer11-PU_S4_START42_V11-v1/*Counters.root"));       
-    
+    chains_fullSel[11]->Add(TString(dir_mc)+TString("/ZZ_TuneZ2_7TeV_pythia6_tauola/*Counters.root"));       
+    chains_fullSel[12]->Add(TString(dir_mc)+TString("/GJets_TuneZ2_40_HT_100_7TeV-madgraph/*Counters.root"));       
+    chains_fullSel[13]->Add(TString(dir_mc)+TString("/GJets_TuneZ2_100_HT_200_7TeV-madgraph/*Counters.root"));       
+    chains_fullSel[14]->Add(TString(dir_mc)+TString("/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauola_Summer11-PU_S4_START42_V11-v1/*Counters.root"));       
     // signal
-    chains_fullSel[14]->Add(TString(dir_mc)+TString(AxiSample));       
+    chains_fullSel[15]->Add(TString(dir_mc)+TString(AxiSample));       
 
     // data
     // if (strcmp(finalstate,"EE")==0) chains_fullSel[0]->Add(TString(dir_data)+TString("/DoubleElectron/*Counters.root"));
@@ -213,14 +222,14 @@ void computeYields(float lumi=1, const char* finalstate="EE", int mass=0) {
     // }
   }
 
-  float nFullSelTot[19][15];
-  for(int isample=0; isample<15; isample++) {
+  float nFullSelTot[19][16];
+  for(int isample=0; isample<16; isample++) {
     for(int icut=0; icut<19; icut++) { nFullSelTot[icut][isample] = 0.0; }
   }
   
   // full selection
   int nCutsAnaFull = 19;
-  for(int isample=0; isample<15; isample++) {
+  for(int isample=0; isample<16; isample++) {
 
     // List of branches    
     Int_t           nCutsFull;
@@ -243,8 +252,8 @@ void computeYields(float lumi=1, const char* finalstate="EE", int mass=0) {
   // eff at full selection level
   for(int icut=0; icut<nCutsAnaFull; icut++) {
 
-    Axi_fullSel[icut] = lumi * Axi_xsec * nFullSelTot[icut][14]/nFullSelTot[0][14];
-    Axi_fullSel_err[icut] = yieldErrPoisson(lumi * Axi_xsec * nFullSelTot[icut][14]/nFullSelTot[0][14], nFullSelTot[icut][14]);
+    Axi_fullSel[icut] = lumi * Axi_xsec * nFullSelTot[icut][15]/nFullSelTot[0][15];
+    Axi_fullSel_err[icut] = yieldErrPoisson(lumi * Axi_xsec * nFullSelTot[icut][15]/nFullSelTot[0][15], nFullSelTot[icut][15]);
 
     Wj_fullSel[icut] = lumi * Wjet_xsec * nFullSelTot[icut][1]/nFullSelTot[0][1];
     Wj_fullSel_err[icut] = yieldErrPoisson(lumi * Wjet_xsec * nFullSelTot[icut][1]/nFullSelTot[0][1], nFullSelTot[icut][1]);
@@ -270,23 +279,26 @@ void computeYields(float lumi=1, const char* finalstate="EE", int mass=0) {
 
     WW_fullSel[icut] = lumi * WW_xsec * nFullSelTot[icut][9]/nFullSelTot[0][9];
     WW_fullSel_err[icut] = yieldErrPoisson(lumi * WW_xsec * nFullSelTot[icut][9]/nFullSelTot[0][9], nFullSelTot[icut][9]);
-
+    
     WZ_fullSel[icut] = lumi * WZ_xsec * nFullSelTot[icut][10]/nFullSelTot[0][10];
     WZ_fullSel_err[icut] = yieldErrPoisson(lumi * WZ_xsec * nFullSelTot[icut][10]/nFullSelTot[0][10], nFullSelTot[icut][10]);
 
+    ZZ_fullSel[icut] = lumi * ZZ_xsec * nFullSelTot[icut][11]/nFullSelTot[0][11];
+    ZZ_fullSel_err[icut] = yieldErrPoisson(lumi * ZZ_xsec * nFullSelTot[icut][11]/nFullSelTot[0][11], nFullSelTot[icut][11]);
+    
     float gjets_tmp=0.;
-    gjets_tmp += lumi * GJets_40_100_xsec   * nFullSelTot[icut][11]/nFullSelTot[0][11];
-    gjets_tmp += lumi * GJets_100_200_xsec  * nFullSelTot[icut][12]/nFullSelTot[0][12];
+    gjets_tmp += lumi * GJets_40_100_xsec   * nFullSelTot[icut][12]/nFullSelTot[0][12];
+    gjets_tmp += lumi * GJets_100_200_xsec  * nFullSelTot[icut][13]/nFullSelTot[0][13];
     gjets_fullSel[icut] = gjets_tmp;
 
-    DY_fullSel[icut] = lumi * DY_xsec * nFullSelTot[icut][13]/nFullSelTot[0][13];
-    DY_fullSel_err[icut] = yieldErrPoisson(lumi * DY_xsec * nFullSelTot[icut][13]/nFullSelTot[0][13], nFullSelTot[icut][13]);
+    DY_fullSel[icut] = lumi * DY_xsec * nFullSelTot[icut][14]/nFullSelTot[0][14];
+    DY_fullSel_err[icut] = yieldErrPoisson(lumi * DY_xsec * nFullSelTot[icut][14]/nFullSelTot[0][14], nFullSelTot[icut][14]);
 
     // data
     data_fullSel[icut] = nFullSelTot[icut][0];
     
     // efficiencies
-    if(icut>0 && nFullSelTot[icut-1][14]>0) Axi_eff_fullSel[icut] = Axi_fullSel[icut]/Axi_fullSel[icut-1];
+    if(icut>0 && nFullSelTot[icut-1][15]>0) Axi_eff_fullSel[icut] = Axi_fullSel[icut]/Axi_fullSel[icut-1];
     else Axi_eff_fullSel[icut] = 0.0;
 
     if(icut>0 && nFullSelTot[icut-1][1]>0) Wj_eff_fullSel[icut] = nFullSelTot[icut][1]/nFullSelTot[icut-1][1];
@@ -304,10 +316,13 @@ void computeYields(float lumi=1, const char* finalstate="EE", int mass=0) {
     if(icut>0 && nFullSelTot[icut-1][10]>0) WZ_eff_fullSel[icut] = nFullSelTot[icut][10]/nFullSelTot[icut-1][10];
     else WZ_eff_fullSel[icut] = 0.0;
 
+    if(icut>0 && nFullSelTot[icut-1][11]>0) ZZ_eff_fullSel[icut] = nFullSelTot[icut][11]/nFullSelTot[icut-1][11];
+    else ZZ_eff_fullSel[icut] = 0.0;
+
     if(icut>0 && gjets_fullSel[icut-1]>0) gjets_eff_fullSel[icut] = gjets_fullSel[icut]/gjets_fullSel[icut-1];
     else gjets_eff_fullSel[icut] = 0.0;
 
-    if(icut>0 && nFullSelTot[icut-1][13]>0) DY_eff_fullSel[icut] = nFullSelTot[icut][13]/nFullSelTot[icut-1][13];
+    if(icut>0 && nFullSelTot[icut-1][14]>0) DY_eff_fullSel[icut] = nFullSelTot[icut][14]/nFullSelTot[icut-1][14];
     else DY_eff_fullSel[icut] = 0.0;
 
     if(icut==0) { 
@@ -317,6 +332,7 @@ void computeYields(float lumi=1, const char* finalstate="EE", int mass=0) {
       SingleTop_eff_fullSel[icut] = SingleTop_fullSel[icut]/SingleTop_fullSel[0];
       WW_eff_fullSel[icut]        = WW_fullSel[icut]/WW_fullSel[0];      
       WZ_eff_fullSel[icut]        = WZ_fullSel[icut]/WZ_fullSel[0];      
+      ZZ_eff_fullSel[icut]        = ZZ_fullSel[icut]/ZZ_fullSel[0];      
       gjets_eff_fullSel[icut]     = gjets_fullSel[icut]/gjets_fullSel[0];
       DY_eff_fullSel[icut]        = DY_fullSel[icut]/DY_fullSel[0];      
     }
@@ -340,6 +356,9 @@ void computeYields(float lumi=1, const char* finalstate="EE", int mass=0) {
 
   if(WZ_fullSel[0]>0) WZ_finaleff_fullSel = WZ_fullSel[nCutsAnaFull-1]/WZ_fullSel[0];
   else WZ_finaleff_fullSel = 0.0;
+
+  if(ZZ_fullSel[0]>0) ZZ_finaleff_fullSel = ZZ_fullSel[nCutsAnaFull-1]/ZZ_fullSel[0];
+  else ZZ_finaleff_fullSel = 0.0;
 
   if(gjets_fullSel[0]>0) gjets_finaleff_fullSel = gjets_fullSel[nCutsAnaFull-1]/gjets_fullSel[0];
   else gjets_finaleff_fullSel = 0.0;
@@ -439,9 +458,9 @@ void printLatex(float lumi, const char* finalstate,int mass) {
   textfile << "\\begin{table}[p]" << endl
 	   << "\\begin{tiny}" << endl
 	   << "\\begin{center}" << endl;
-  textfile << "\\begin{tabular}{|c|c|c|c|c|}" << endl;
+  textfile << "\\begin{tabular}{|c|c|c|c|c|c|}" << endl;
   textfile << "\\hline" << endl;
-  textfile << "selection & WW & WZ & gamma+jets & DY \t\\\\" << endl;
+  textfile << "selection & WW & WZ & ZZ & gamma+jets & DY \t\\\\" << endl;
   textfile << "\\hline" << endl; 
   textfile << "\\hline" << endl;
   textfile << "\\hline" << endl;
@@ -453,6 +472,7 @@ void printLatex(float lumi, const char* finalstate,int mass) {
     textfile << fixed
 	     << WW_fullSel[icut]         << " (" << 100. * WW_eff_fullSel[icut]         << "\\%)" << "\t&\t"
 	     << WZ_fullSel[icut]         << " (" << 100. * WZ_eff_fullSel[icut]         << "\\%)" << "\t&\t"
+	     << ZZ_fullSel[icut]         << " (" << 100. * ZZ_eff_fullSel[icut]         << "\\%)" << "\t&\t"
 	     << gjets_fullSel[icut]      << " (" << 100. * gjets_eff_fullSel[icut]      << "\\%)" << "\t&\t"
 	     << DY_fullSel[icut]         << " (" << 100. * DY_eff_fullSel[icut]         << "\\%)" << "\t";
     textfile << "\t\\\\" << endl;
@@ -463,6 +483,7 @@ void printLatex(float lumi, const char* finalstate,int mass) {
   textfile << "total fullselection "  << "\t&\t"
 	   << WW_fullSel[18]          << " (" << 100. * WW_finaleff_fullSel        << "\\%)"    << "\t&\t"
 	   << WZ_fullSel[18]          << " (" << 100. * WZ_finaleff_fullSel        << "\\%)"    << "\t&\t"
+	   << ZZ_fullSel[18]          << " (" << 100. * ZZ_finaleff_fullSel        << "\\%)"    << "\t&\t"
 	   << gjets_fullSel[18]       << " (" << 100. * gjets_finaleff_fullSel     << "\\%)"    << "\t&\t"
 	   << DY_fullSel[18]          << " (" << 100. * DY_finaleff_fullSel        << "\\%)"    << "\t";
   textfile << "\t\\\\" << endl;
