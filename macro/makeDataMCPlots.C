@@ -11,8 +11,8 @@
 
 #include <iostream>
 
-#define NSPECIES 4
-#define NVARIABLES 10
+#define NSPECIES 6
+#define NVARIABLES 14
 #define NCUTS 1
 
 void makeDataMCPlots()
@@ -32,33 +32,43 @@ void makeDataMCPlots()
 
   TString species[NSPECIES];
   species[0]="Data";
-  species[1]="W+jets";
-  species[2]="top";
-  species[3]="AG+W";
+  species[1]="dibosons";
+  species[2]="others";
+  species[3]="W+jets";
+  species[4]="top";
+  species[5]="AG+W";
 
   Color_t colors[NSPECIES];
   colors[0]=kBlack;
-  colors[1]=kViolet;
-  colors[2]=kOrange+8;
+  colors[1]=kBlue;
+  colors[2]=kPink;
   colors[3]=kOrange;
+  colors[4]=kViolet;
+  colors[5]=kBlack;
 
   Color_t lineColors[NSPECIES];
   lineColors[0]=kBlack;
-  lineColors[1]=kViolet+3;
-  lineColors[2]=kOrange+4;
-  lineColors[3]=kOrange+7;
+  lineColors[1]=kBlue;
+  lineColors[2]=kPink;
+  lineColors[3]=kOrange+8;
+  lineColors[4]=kViolet;
+  lineColors[5]=kBlack;
 
   int legendOrder[NSPECIES];
   legendOrder[0]=0;
-  legendOrder[1]=3;
-  legendOrder[2]=2;
-  legendOrder[3]=1;
+  legendOrder[1]=5;
+  legendOrder[2]=4;
+  legendOrder[3]=3;
+  legendOrder[4]=2;
+  legendOrder[5]=1;
 
   TString files[NSPECIES];
   // files[0]="results_data/datasets_trees/data_Wenu.root";
-  files[1]="results/datasets_trees/Wjets_ll.root";
-  files[2]="results/datasets_trees/top_ll.root";
-  files[3]="results/datasets_trees/axiW500_ll.root";
+  files[1]="results/datasets_trees/dibosons_ll.root";
+  files[2]="results/datasets_trees/others_ll.root";
+  files[3]="results/datasets_trees/Wjets_ll.root";
+  files[4]="results/datasets_trees/top_ll.root";
+  files[5]="results/datasets_trees/axiW500_ll.root";
 
   TString plotsDir="./axi/";
   TFile* fOut=new TFile("histos_"+suffix+".root","RECREATE");
@@ -71,12 +81,16 @@ void makeDataMCPlots()
   variables[1]="chmet";
   variables[2]="pfwmt";
   variables[3]="chwmt";
-  variables[4]="leptPt";
-  variables[5]="dijetInvMass";
-  variables[6]="dijetDeta";
-  variables[7]="dijetPt";
-  variables[8]="njets";
-  variables[9]="nvtx";
+  variables[4]="leptPt1";
+  variables[5]="leptPt2";
+  variables[6]="dijetInvMass";
+  variables[7]="dijetDeta";
+  variables[8]="dijetPt";
+  variables[9]="njets";
+  variables[10]="nvtx";
+  variables[11]="productJetLike";
+  variables[12]="leadingJetLike";
+  variables[13]="secondJetLike";
 
   TString units[NVARIABLES];
   units[0]="GeV";
@@ -85,10 +99,14 @@ void makeDataMCPlots()
   units[3]="GeV";
   units[4]="GeV";
   units[5]="GeV";
-  units[6]="";
-  units[7]="GeV";
-  units[8]="";
+  units[6]="GeV";
+  units[7]="";
+  units[8]="GeV";
   units[9]="";
+  units[10]="";
+  units[11]="";
+  units[12]="";
+  units[13]="";
 
   int nbins[NVARIABLES];
   nbins[0]=40;
@@ -97,10 +115,14 @@ void makeDataMCPlots()
   nbins[3]=50;  
   nbins[4]=75;  
   nbins[5]=75;  
-  nbins[6]=50;  
-  nbins[7]=50;
-  nbins[8]=10;
-  nbins[9]=25;
+  nbins[6]=75;  
+  nbins[7]=50;  
+  nbins[8]=50;
+  nbins[9]=10;
+  nbins[10]=25;
+  nbins[11]=25;
+  nbins[12]=25;
+  nbins[13]=25;
 
   float range[NVARIABLES][2]; // 8 variables, min, max
   // pf met
@@ -115,39 +137,56 @@ void makeDataMCPlots()
   // ch mT
   range[3][0]=0.;    
   range[3][1]=200.;   
-  // lepton pt
+  // max lepton pt
   range[4][0]=0.;
   range[4][1]=150.;   
+  // min lepton pt
+  range[5][0]=0.;
+  range[5][1]=150.;   
   // m(jj)
-  range[5][0]=200.;
-  range[5][1]=800.;   
+  range[6][0]=200.;
+  range[6][1]=800.;   
   // etaj1 - etaj2
-  range[6][0]=-10.;
-  range[6][1]=10.;
+  range[7][0]=-10.;
+  range[7][1]=10.;
   // pT(jj)
-  range[7][0]=0.;
-  range[7][1]=300.;   
-  // njets
   range[8][0]=0.;
-  range[8][1]=10.;
+  range[8][1]=300.;   
+  // njets
+  range[9][0]=0.;
+  range[9][1]=10.;
   // nvtx
-  range[9][0]=1.;
-  range[9][1]=26.;
+  range[10][0]=1.;
+  range[10][1]=26.;
+  // q-g likelihood
+  range[11][0]=0.;
+  range[11][1]=1.;
+  // q-g likelihood
+  range[12][0]=0.;
+  range[12][1]=1.;
+  // q-g likelihood
+  range[13][0]=0.;
+  range[13][1]=1.;
 
   TString xaxisLabel[NVARIABLES];
   xaxisLabel[0]="PF met";
   xaxisLabel[1]="charged met";
   xaxisLabel[2]="PF W m_{T}";
   xaxisLabel[3]="charged W m_{T}";
-  xaxisLabel[4]="lepton pT";
-  xaxisLabel[5]="m(jj)";
-  xaxisLabel[6]="etaj1 - etaj2";
-  xaxisLabel[7]="pT (jj)";
-  xaxisLabel[8]="n jets";
-  xaxisLabel[9]="n vtx";
+  xaxisLabel[4]="max lepton pT";
+  xaxisLabel[5]="min lepton pT";
+  xaxisLabel[6]="m(jj)";
+  xaxisLabel[7]="etaj1 - etaj2";
+  xaxisLabel[8]="pT (jj)";
+  xaxisLabel[9]="n jets";
+  xaxisLabel[10]="n vtx";
+  xaxisLabel[11]="quark-gluon likelihood (1*2)";
+  xaxisLabel[11]="quark-gluon likelihood (1)";
+  xaxisLabel[12]="quark-gluon likelihood (2)";
 
   TString binSize[NVARIABLES];
   for (int z=0;z<NVARIABLES;++z) {
+    cout << "doing variable " << z << endl;
     for (int j=0;j<NCUTS;++j) {
       sprintf(icut[j],"icut%d",j);
       // for (int i=0;i<NSPECIES;++i) {   // chiara
@@ -162,7 +201,7 @@ void makeDataMCPlots()
 
   TString cut[NCUTS];
   cut[0]="(step[7] && njets>=2)*";
-
+  
   TString intLumi="1000";
   TFile *_file[NSPECIES];
   TTree *T1[NSPECIES];
@@ -178,8 +217,7 @@ void makeDataMCPlots()
   int nspeciesToRun=NSPECIES;
   for (int z=0;z<NVARIABLES;++z) {
     for (int j=0;j<NCUTS;++j) {
-      // for (int i=0;i<nspeciesToRun;++i) {   // chiara
-      for (int i=1;i<nspeciesToRun;++i) {
+      for (int i=1;i<nspeciesToRun;++i) {    // chiara
 	fOut->cd();
 	TString histoName=variables[z]+"_W_"+species[i]+"_"+TString(icut[j]);
 	std::cout << "Producing " << histoName << std::endl;
@@ -189,14 +227,14 @@ void makeDataMCPlots()
 	}
 	if (i!=0)
 	  T1[i]->Project(histoName,variables[z],cut[j]+"baseW");
-	  // T1[i]->Project(histoName,variables[z],cut[j]+"baseW*puW*effW");   // chiara
+	// T1[i]->Project(histoName,variables[z],cut[j]+"baseW*puW*effW");   // chiara
 	else
 	  T1[i]->Project(histoName,variables[z],cut[j]+"1.");
 	std::cout << "Done " << histoName << std::endl;
       }
       
       THStack histo_MC(variables[z]+"_MC",variables[z]+"_MC");
-      for (int i=1;i<nspeciesToRun;++i) {
+      for (int i=1;i<(nspeciesToRun-1);++i) {    // chiara: signal not stuck
 	histos[i][j][z]->SetFillColor(colors[i]);
 	histos[i][j][z]->SetLineColor(lineColors[i]);
 	histo_MC.Add(histos[i][j][z]);
@@ -213,6 +251,10 @@ void makeDataMCPlots()
       // histos[0][j][z]->SetMarkerStyle(20);   // chiara
       // histos[0][j][z]->SetMarkerSize(1.3);
       // histos[0][j][z]->Draw("EP1SAME");
+
+      // histos[5][j][z]->SetFillColor(colors[5]);
+      histos[5][j][z]->SetLineColor(lineColors[5]);
+      histos[5][j][z]->Draw("SAME");   // chiara: signal not stuck
 
       TPaveText pt1(0.6,0.83,0.8,0.9,"NDC");
       pt1.SetTextSize(0.028);
