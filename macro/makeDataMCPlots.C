@@ -12,7 +12,7 @@
 #include <iostream>
 
 #define NSPECIES 6
-#define NVARIABLES 14
+#define NVARIABLES 13
 #define NCUTS 1
 
 void makeDataMCPlots()
@@ -82,15 +82,14 @@ void makeDataMCPlots()
   variables[2]="pfwmt";
   variables[3]="chwmt";
   variables[4]="leptPt1";
-  variables[5]="leptPt2";
-  variables[6]="dijetInvMass";
-  variables[7]="dijetDeta";
-  variables[8]="dijetPt";
-  variables[9]="njets";
-  variables[10]="nvtx";
-  variables[11]="productJetLike";
-  variables[12]="leadingJetLike";
-  variables[13]="secondJetLike";
+  variables[5]="dijetInvMass";
+  variables[6]="dijetDeta";
+  variables[7]="dijetPt";
+  variables[8]="njets";
+  variables[9]="nvtx";
+  variables[10]="productJetLike";
+  variables[11]="leadingJetLike";
+  variables[12]="secondJetLike";
 
   TString units[NVARIABLES];
   units[0]="GeV";
@@ -99,14 +98,13 @@ void makeDataMCPlots()
   units[3]="GeV";
   units[4]="GeV";
   units[5]="GeV";
-  units[6]="GeV";
-  units[7]="";
-  units[8]="GeV";
+  units[6]="";
+  units[7]="GeV";
+  units[8]="";
   units[9]="";
   units[10]="";
   units[11]="";
   units[12]="";
-  units[13]="";
 
   int nbins[NVARIABLES];
   nbins[0]=40;
@@ -115,14 +113,13 @@ void makeDataMCPlots()
   nbins[3]=50;  
   nbins[4]=75;  
   nbins[5]=75;  
-  nbins[6]=75;  
-  nbins[7]=50;  
-  nbins[8]=50;
-  nbins[9]=10;
+  nbins[6]=50;  
+  nbins[7]=50;
+  nbins[8]=10;
+  nbins[9]=25;
   nbins[10]=25;
   nbins[11]=25;
   nbins[12]=25;
-  nbins[13]=25;
 
   float range[NVARIABLES][2]; // 8 variables, min, max
   // pf met
@@ -137,56 +134,51 @@ void makeDataMCPlots()
   // ch mT
   range[3][0]=0.;    
   range[3][1]=200.;   
-  // max lepton pt
+  // lepton pt
   range[4][0]=0.;
   range[4][1]=150.;   
-  // min lepton pt
-  range[5][0]=0.;
-  range[5][1]=150.;   
   // m(jj)
-  range[6][0]=200.;
-  range[6][1]=800.;   
+  range[5][0]=200.;
+  range[5][1]=800.;   
   // etaj1 - etaj2
-  range[7][0]=-10.;
-  range[7][1]=10.;
+  range[6][0]=-10.;
+  range[6][1]=10.;
   // pT(jj)
-  range[8][0]=0.;
-  range[8][1]=300.;   
+  range[7][0]=0.;
+  range[7][1]=300.;   
   // njets
-  range[9][0]=0.;
-  range[9][1]=10.;
+  range[8][0]=0.;
+  range[8][1]=10.;
   // nvtx
-  range[10][0]=1.;
-  range[10][1]=26.;
+  range[9][0]=1.;
+  range[9][1]=26.;
+  // q-g likelihood
+  range[10][0]=0.;
+  range[10][1]=1.;
   // q-g likelihood
   range[11][0]=0.;
   range[11][1]=1.;
   // q-g likelihood
   range[12][0]=0.;
   range[12][1]=1.;
-  // q-g likelihood
-  range[13][0]=0.;
-  range[13][1]=1.;
 
   TString xaxisLabel[NVARIABLES];
   xaxisLabel[0]="PF met";
   xaxisLabel[1]="charged met";
   xaxisLabel[2]="PF W m_{T}";
   xaxisLabel[3]="charged W m_{T}";
-  xaxisLabel[4]="max lepton pT";
-  xaxisLabel[5]="min lepton pT";
-  xaxisLabel[6]="m(jj)";
-  xaxisLabel[7]="etaj1 - etaj2";
-  xaxisLabel[8]="pT (jj)";
-  xaxisLabel[9]="n jets";
-  xaxisLabel[10]="n vtx";
-  xaxisLabel[11]="quark-gluon likelihood (1*2)";
+  xaxisLabel[4]="lepton pT";
+  xaxisLabel[5]="m(jj)";
+  xaxisLabel[6]="etaj1 - etaj2";
+  xaxisLabel[7]="pT (jj)";
+  xaxisLabel[8]="n jets";
+  xaxisLabel[9]="n vtx";
+  xaxisLabel[10]="quark-gluon likelihood (1*2)";
   xaxisLabel[11]="quark-gluon likelihood (1)";
   xaxisLabel[12]="quark-gluon likelihood (2)";
 
   TString binSize[NVARIABLES];
   for (int z=0;z<NVARIABLES;++z) {
-    cout << "doing variable " << z << endl;
     for (int j=0;j<NCUTS;++j) {
       sprintf(icut[j],"icut%d",j);
       // for (int i=0;i<NSPECIES;++i) {   // chiara
